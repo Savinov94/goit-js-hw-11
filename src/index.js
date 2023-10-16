@@ -1,6 +1,7 @@
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import axios from 'axios';
 
 const form = document.getElementById('search-form');
 const gallery = document.querySelector('.gallery');
@@ -31,15 +32,23 @@ loadMoreButton.addEventListener('click', () => {
 
 async function fetchImages() {
   try {
-    const response = await fetch(
-      `${BASE_URL}?key=${API_KEY}&q=${searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`
-    );
+    const response = await axios.get(BASE_URL, {
+      params: {
+        key: API_KEY,
+        q: searchQuery,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: true,
+        page: page,
+        per_page: 40,
+      },
+    });
 
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error('Помилка запиту до сервера');
     }
 
-    const data = await response.json();
+    const data = response.data;
 
     if (data.hits.length === 0) {
       if (page === 1) {
@@ -100,4 +109,3 @@ function createImageCard(image) {
 
   return card;
 }
-
