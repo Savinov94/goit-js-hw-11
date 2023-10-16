@@ -87,7 +87,6 @@ a {
 .load-more {
   display: flex;
   align-items: center;
-
   width: 100vw;
   background-color: #20b2aa;
   color: aliceblue;
